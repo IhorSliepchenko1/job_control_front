@@ -14,3 +14,5 @@ export const api = createApi({
      refetchOnMountOrArgChange: true,
      endpoints: () => ({}),
 })
+
+// builder.mutation <** Response **, ** Arg **>

@@ -2,17 +2,11 @@ import { Snippet } from "@heroui/snippet";
 import { Code } from "@heroui/code";
 import { title, subtitle } from "@/components/ui/primitives";
 import DefaultLayout from "@/components/layouts/default";
-import { useDeleteUserMutation } from "@/app/services/userApi";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 
 export default function IndexPage() {
-  const dispatch = useDispatch()
-  const [deleteUserMutation] = useDeleteUserMutation()
-
-  useEffect(() => {
-    deleteUserMutation(122112212)
-  }, [])
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:3000/auth/google/redirect';
+  };
 
   return (
     <DefaultLayout>
@@ -37,6 +31,14 @@ export default function IndexPage() {
           </Snippet>
         </div>
       </section>
+
+
+      {/* <form className="grid gap-2 bg-white p-5" onSubmit={onRegisterUser}> */}
+      {/* <input type="text" onChange={eData} name="name" placeholder="name" className="p-1" />
+        <input type="password" onChange={eData} name="password" placeholder="password" className="p-1" />
+        <input type="email" onChange={eData} name="email" placeholder="email" className="p-1" /> */}
+      <button onClick={handleGoogleLogin} className="bg-black">Отправить</button>
+      {/* </form> */}
     </DefaultLayout>
   );
 }
