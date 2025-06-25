@@ -1,23 +1,54 @@
-import { Route, Routes } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useNavigate,
+  useHref,
+  Outlet,
+} from "react-router-dom";
 
 import IndexPage from "@/pages/index";
 import DocsPage from "@/pages/docs";
 import PricingPage from "@/pages/pricing";
 import BlogPage from "@/pages/blog";
 import AboutPage from "@/pages/about";
+import Layout from "@/components/layouts/layout";
+import { HeroUIProvider } from "@heroui/system";
+import Auth from "@/pages/auth";
 
-function App() {
+function WithUiProvider() {
+  const navigate = useNavigate();
+  const href = useHref;
+
   return (
-    <Routes>
-      <Route element={<IndexPage />} path="/" />
-      <Route element={<IndexPage />} path="/home" />
-      <Route element={<DocsPage />} path="/docs" />
-      <Route element={<PricingPage />} path="/pricing" />
-      <Route element={<BlogPage />} path="/blog" />
-      <Route element={<AboutPage />} path="/about" />
-      <Route element={<IndexPage />} path="/logout" />
-    </Routes>
+    <HeroUIProvider navigate={navigate} useHref={href}>
+      <Outlet />
+    </HeroUIProvider>
   );
 }
 
-export default App;
+const router = createBrowserRouter([
+  {
+    element: <WithUiProvider />,
+    children: [
+      {
+        path: "auth",
+        element: <Auth />,
+      },
+      {
+        path: "/",
+        element: <Layout />,
+        children: [
+          { index: true, element: <IndexPage /> },
+          { path: "docs", element: <DocsPage /> },
+          { path: "pricing", element: <PricingPage /> },
+          { path: "blog", element: <BlogPage /> },
+          { path: "about", element: <AboutPage /> },
+        ],
+      },
+    ],
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
