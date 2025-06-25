@@ -10,8 +10,22 @@ import {
 } from "@heroui/navbar";
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/ui/theme-switch";
+import { useLogoutMutation } from "@/app/services/auth/authApi";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
+  const [logout] = useLogoutMutation()
+  const navigate = useNavigate()
+
+  const logoutSession = async () => {
+    try {
+      await logout().unwrap()
+      navigate(`/auth`)
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <HeroUINavbar maxWidth="full" position="sticky">
@@ -20,13 +34,19 @@ export const Navbar = () => {
         </NavbarBrand>
         <div className="hidden sm:flex gap-4 justify-start ml-2">
           {siteConfig.navDesktop.map((item, index) => (
-            <NavbarItem key={item.href}>
-              <Link
-                color={index === siteConfig.navDesktop.length - 1 ? "danger" : "foreground"}
-                href={item.href}
-              >
-                {item.label}
-              </Link>
+            <NavbarItem key={item.href ?? index} className="flex items-center">
+              {
+                item.label === "Logout" ?
+                  <p className="text-red-600 cursor-pointer" onClick={logoutSession}>{item.label}</p>
+                  :
+                  <Link
+                    color={"foreground"}
+                    href={item.href}
+                  >
+                    {item.label}
+                  </Link>
+              }
+
             </NavbarItem>
           ))}
         </div>
@@ -41,19 +61,18 @@ export const Navbar = () => {
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {siteConfig.navMobile.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === siteConfig.navMobile.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
-                href="#"
-                size="lg"
-              >
-                {item.label}
-              </Link>
+              {
+                item.label === "Logout" ?
+                  <p className="text-red-600 cursor-pointer" onClick={logoutSession}>{item.label}</p>
+                  :
+                  <Link
+                    color={"foreground"}
+                    href={item.href}
+                  >
+                    {item.label}
+                  </Link>
+              }
+
             </NavbarMenuItem>
           ))}
         </div>

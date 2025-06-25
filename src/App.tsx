@@ -14,14 +14,17 @@ import AboutPage from "@/pages/about";
 import Layout from "@/components/layouts/layout";
 import { HeroUIProvider } from "@heroui/system";
 import Auth from "@/pages/auth";
+import { AuthGuard } from "./components/auth-guard";
 
-function WithUiProvider() {
+const WithUiProvider = () => {
   const navigate = useNavigate();
   const href = useHref;
 
   return (
     <HeroUIProvider navigate={navigate} useHref={href}>
-      <Outlet />
+      <AuthGuard>
+        <Outlet />
+      </AuthGuard>
     </HeroUIProvider>
   );
 }
@@ -49,6 +52,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-export default function App() {
+export const App = () => {
   return <RouterProvider router={router} />;
 }

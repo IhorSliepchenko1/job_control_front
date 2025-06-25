@@ -4,6 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "./input";
 import { Button } from "@heroui/react";
 import { useRegisterUserMutation } from "@/app/services/auth/authApi";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { isErrorMessage } from "@/utils/is-error-message";
+import { ErrorMessage } from "./ui/error-message";
 
 const registerSchema = z.object({
      email: z.string()
@@ -21,7 +25,7 @@ const registerSchema = z.object({
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
-export default function RegisterForm() {
+export const RegisterForm = () => {
      const {
           register,
           handleSubmit,
@@ -32,19 +36,21 @@ export default function RegisterForm() {
           mode: "all",
      });
      const [registration, { isLoading }] = useRegisterUserMutation()
+     const [errorMessage, setErrorMessage] = useState('')
+     const navigate = useNavigate()
 
-     async function onSubmit(body: RegisterFormData) {
+     const onSubmit = async (body: RegisterFormData) => {
           try {
-               await registration(body)
+               await registration(body).unwrap();
+               navigate(`/`)
                reset()
           } catch (error) {
-               console.log(error);
-
+               setErrorMessage(isErrorMessage(error))
           }
      }
 
      return (
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between min-h-[20rem]">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex min-w-[100%] flex-col justify-between min-h-[20rem]">
                <div className="flex flex-col gap-3">
                     <Input<RegisterFormData>
                          label="Email"
@@ -70,6 +76,7 @@ export default function RegisterForm() {
                          register={register}
                          errors={errors}
                     />
+                    <ErrorMessage errorMessage={errorMessage} />
                </div>
 
                <div className="flex gap-2 justify-end">
@@ -85,3 +92,4 @@ export default function RegisterForm() {
           </form>
      )
 }
+

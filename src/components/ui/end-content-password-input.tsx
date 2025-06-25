@@ -6,7 +6,7 @@ type Props = {
      setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function EndContentPasswordInput({ isVisible, setIsVisible }: Props) {
+export const EndContentPasswordInput: React.FC<Props> = ({ isVisible, setIsVisible }) => {
      const toggleVisibility = () => setIsVisible(!isVisible);
 
      return (

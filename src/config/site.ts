@@ -24,7 +24,7 @@ export const siteConfig = {
     },
     {
       label: "Logout",
-      href: "/logout",
+      // href: "/auth",
     },
   ],
   navMobile: [
@@ -58,7 +58,7 @@ export const siteConfig = {
     },
     {
       label: "Logout",
-      href: "/logout",
+      // href: "/logout",
     },
   ],
 };

@@ -1,6 +1,7 @@
-import RegisterForm from "@/components/register-form";
+import { LoginForm } from "@/components/login-form";
+import { RegisterForm } from "@/components/register-form";
 import { ThemeSwitch } from "@/components/ui/theme-switch";
-import { Tabs, Tab, Input, Link, Button, Card, CardBody } from "@heroui/react";
+import { Tabs, Tab, Card, CardBody } from "@heroui/react";
 import { useState } from "react";
 
 export default function Auth() {
@@ -13,8 +14,8 @@ export default function Auth() {
                     <ThemeSwitch />
                </div>
 
-               <div className="flex h-[90vh] items-center justify-center">
-                    <Card className="max-w-full w-[340px] h-[400px]">
+               <div className="flex justify-center p-5 mt-[50px]">
+                    <Card className="max-w-full w-[80vw]">
                          <CardBody className="overflow-hidden">
                               <Tabs
                                    fullWidth
@@ -24,26 +25,7 @@ export default function Auth() {
                                    onSelectionChange={() => selectionChange()}
                               >
                                    <Tab key="login" title="Login">
-                                        <form className="flex flex-col gap-4">
-                                             <Input isRequired label="Email" placeholder="Enter your email" type="email" />
-                                             <Input
-                                                  isRequired
-                                                  label="Password"
-                                                  placeholder="Enter your password"
-                                                  type="password"
-                                             />
-                                             <p className="text-center text-small">
-                                                  Need to create an account?{" "}
-                                                  <Link size="sm" onPress={() => setSelected("sign-up")}>
-                                                       Sign up
-                                                  </Link>
-                                             </p>
-                                             <div className="flex gap-2 justify-end">
-                                                  <Button fullWidth color="primary">
-                                                       Login
-                                                  </Button>
-                                             </div>
-                                        </form>
+                                        <LoginForm />
                                    </Tab>
                                    <Tab key="sign-up" title="Sign up">
                                         <RegisterForm />

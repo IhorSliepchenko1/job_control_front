@@ -31,17 +31,17 @@ export const authApi = api.injectEndpoints({
                }),
           }),
 
-          validateRefreshToken: builder.query<ApiResponse, void>({
+          validateRefreshToken: builder.mutation<ApiResponse, void>({
                query: () => ({
                     url: `/auth/validate-refresh-token`,
-                    method: METHODS.GET,
+                    method: METHODS.POST,
                }),
           }),
 
-          validateAccessToken: builder.query<ApiResponse, void>({
+          validateAccessToken: builder.mutation<ApiResponse, void>({
                query: () => ({
                     url: `/auth/validate-access-token`,
-                    method: METHODS.GET,
+                    method: METHODS.POST,
                }),
           }),
 
@@ -58,25 +58,15 @@ export const authApi = api.injectEndpoints({
                     method: METHODS.POST,
                }),
           }),
-
-          // googleAuthRedirect: builder.mutation<ApiResponse, void>({
-          //      query: () => ({
-          //           url: `/auth/google/redirect`,
-          //           method: METHODS.GET,
-          //      }),
-          // }),
-
      }),
 })
 
 export const {
-     useLazyValidateAccessTokenQuery,
-     useLazyValidateRefreshTokenQuery,
      useLoginMutation,
      useLogoutMutation,
      useRegisterEmployeeMutation,
      useRegisterUserMutation,
      useUpdateRefreshTokenMutation,
-     useValidateAccessTokenQuery,
-     useValidateRefreshTokenQuery,
+     useValidateAccessTokenMutation,
+     useValidateRefreshTokenMutation
 } = authApi

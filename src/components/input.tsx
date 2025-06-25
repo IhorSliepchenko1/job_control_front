@@ -1,7 +1,7 @@
 import { Input as InputUi } from "@heroui/input";
 import { useState } from "react";
 import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
-import EndContentPasswordInput from "./ui/end-content-password-input";
+import { EndContentPasswordInput } from "./ui/end-content-password-input";
 
 
 type Props<T extends Record<string, any>> = {
