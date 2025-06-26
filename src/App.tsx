@@ -16,12 +16,13 @@ import { HeroUIProvider } from "@heroui/system";
 import Auth from "@/pages/auth";
 import { AuthGuard } from "./components/auth-guard";
 
+
 const WithUiProvider = () => {
   const navigate = useNavigate();
   const href = useHref;
 
   return (
-    <HeroUIProvider navigate={navigate} useHref={href}>
+    <HeroUIProvider navigate={navigate} useHref={href} >
       <AuthGuard>
         <Outlet />
       </AuthGuard>

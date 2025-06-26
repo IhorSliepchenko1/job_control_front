@@ -1,15 +1,17 @@
 import { useNavigate } from "react-router-dom"
 import {
      useUpdateRefreshTokenMutation,
-     useValidateAccessTokenMutation,
-     useValidateRefreshTokenMutation
+     useValidateAccessTokenQuery,
+     useValidateRefreshTokenQuery
 } from "@/app/services/auth/authApi"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Loader } from "./ui/loader"
+import { ThemeSwitch } from "./ui/theme-switch"
 
 export const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-     const [isValidateAccessToken] = useValidateAccessTokenMutation()
-     const [isValidateRefreshToken] = useValidateRefreshTokenMutation()
+     const { data: accessData, isLoading: isAccessLoading } = useValidateAccessTokenQuery()
+     const { data: refreshData, isLoading: isRefreshLoading } = useValidateRefreshTokenQuery()
+
      const [updateTokens] = useUpdateRefreshTokenMutation()
      const [loading, setLoading] = useState(true)
      const navigate = useNavigate()
@@ -20,37 +22,37 @@ export const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children })
           navigate(`/`)
      }
 
-     const isValidateTokens = useCallback(async () => {
-          try {
-               const checkAccess = await isValidateAccessToken()
+     useEffect(() => {
+          if (isAccessLoading || isRefreshLoading) return
 
-               if (!checkAccess.data?.success) {
-                    const checkRefresh = await isValidateRefreshToken()
-
-                    if (!checkRefresh.data?.success) {
-                         redirectAuth()
-                    }
-                    else {
+          const check = async () => {
+               try {
+                    if (!accessData?.success) {
+                         if (!refreshData?.success) {
+                              redirectAuth()
+                         } else {
+                              await updateToken()
+                         }
+                    } else {
                          await updateToken()
                     }
+               } catch (e) {
+                    console.log(e);
+                    redirectAuth()
+               } finally {
+                    setLoading(false)
                }
-               else {
-                    await updateToken()
-               }
           }
-          catch (e) {
-               redirectAuth()
-          }
-          finally {
-               setLoading(false);
-          }
-     }, [isValidateAccessToken, isValidateRefreshToken, updateTokens, navigate])
 
-     useEffect(() => {
-          isValidateTokens()
-     }, [isValidateTokens])
+          check()
+     }, [accessData, refreshData, isAccessLoading, isRefreshLoading])
 
-     return loading ? <Loader /> : <>{children}</>
+     return <>
+          <div className="absolute right-0 top-0 z-[999] p-[20px]">
+               <ThemeSwitch />
+          </div>
+          {loading ? <Loader /> : <>{children}</>}
+     </>
 }
 
 

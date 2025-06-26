@@ -9,7 +9,6 @@ import {
   NavbarMenuItem,
 } from "@heroui/navbar";
 import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/ui/theme-switch";
 import { useLogoutMutation } from "@/app/services/auth/authApi";
 import { useNavigate } from "react-router-dom";
 
@@ -46,14 +45,12 @@ export const Navbar = () => {
                     {item.label}
                   </Link>
               }
-
             </NavbarItem>
           ))}
         </div>
       </NavbarContent>
 
-      <NavbarContent className="basis-1 pl-4" justify="end">
-        <ThemeSwitch />
+      <NavbarContent className="basis-1 pr-[40px]" justify="end">
         <NavbarMenuToggle className="sm:hidden" />
       </NavbarContent>
 

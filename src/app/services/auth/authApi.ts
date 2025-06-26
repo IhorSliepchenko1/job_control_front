@@ -31,17 +31,17 @@ export const authApi = api.injectEndpoints({
                }),
           }),
 
-          validateRefreshToken: builder.mutation<ApiResponse, void>({
+          validateRefreshToken: builder.query<ApiResponse, void>({
                query: () => ({
                     url: `/auth/validate-refresh-token`,
-                    method: METHODS.POST,
+                    method: METHODS.GET,
                }),
           }),
 
-          validateAccessToken: builder.mutation<ApiResponse, void>({
+          validateAccessToken: builder.query<ApiResponse, void>({
                query: () => ({
                     url: `/auth/validate-access-token`,
-                    method: METHODS.POST,
+                    method: METHODS.GET,
                }),
           }),
 
@@ -67,6 +67,6 @@ export const {
      useRegisterEmployeeMutation,
      useRegisterUserMutation,
      useUpdateRefreshTokenMutation,
-     useValidateAccessTokenMutation,
-     useValidateRefreshTokenMutation
+     useValidateAccessTokenQuery,
+     useValidateRefreshTokenQuery
 } = authApi

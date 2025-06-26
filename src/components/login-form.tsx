@@ -8,6 +8,7 @@ import { isErrorMessage } from "@/utils/is-error-message";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ErrorMessage } from "./ui/error-message";
+import { GoogleAuth } from "./google-auth";
 
 const loginSchema = z.object({
      email: z.string()
@@ -46,7 +47,7 @@ export const LoginForm = () => {
      }
 
      return (
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between min-h-[20rem]">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between gap-4">
                <div className="flex flex-col gap-3">
                     <Input<LoginFormData>
                          label="Email"
@@ -66,7 +67,7 @@ export const LoginForm = () => {
                     />
                     <ErrorMessage errorMessage={errorMessage} />
                </div>
-               <div className="flex gap-2 justify-end">
+               <div className="flex flex-col gap-2 justify-end">
                     <Button
                          fullWidth
                          color="primary"
@@ -75,6 +76,7 @@ export const LoginForm = () => {
                     >
                          Войти
                     </Button>
+                    <GoogleAuth text="Войти" />
                </div>
           </form>
      )

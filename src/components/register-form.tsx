@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { isErrorMessage } from "@/utils/is-error-message";
 import { ErrorMessage } from "./ui/error-message";
+import { GoogleAuth } from "./google-auth";
 
 const registerSchema = z.object({
      email: z.string()
@@ -50,7 +51,7 @@ export const RegisterForm = () => {
      }
 
      return (
-          <form onSubmit={handleSubmit(onSubmit)} className="flex min-w-[100%] flex-col justify-between min-h-[20rem]">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex min-w-[100%] flex-col justify-between gap-4">
                <div className="flex flex-col gap-3">
                     <Input<RegisterFormData>
                          label="Email"
@@ -79,7 +80,7 @@ export const RegisterForm = () => {
                     <ErrorMessage errorMessage={errorMessage} />
                </div>
 
-               <div className="flex gap-2 justify-end">
+               <div className="flex flex-col gap-2 justify-end">
                     <Button
                          fullWidth
                          color="primary"
@@ -88,6 +89,7 @@ export const RegisterForm = () => {
                     >
                          Зарегистрироваться
                     </Button>
+                    <GoogleAuth text="Зарегистрироваться" />
                </div>
           </form>
      )
