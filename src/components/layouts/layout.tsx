@@ -2,12 +2,11 @@ import { Link } from "@heroui/link";
 import { Navbar } from "@/components/navbar";
 import { Outlet } from "react-router-dom";
 
-export default function Layout() {
+export const Layout = () => {
   return (
-    <div className="relative flex flex-col h-screen">
-      <Navbar />
-
-      <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
+    <div className="flex flex-col h-screen justify-between">
+      <main>
+        <Navbar />
         <Outlet />
       </main>
 
@@ -24,4 +23,4 @@ export default function Layout() {
       </footer>
     </div>
   );
-}
+};

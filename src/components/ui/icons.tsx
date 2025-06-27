@@ -1,4 +1,5 @@
 import { IconSvgProps } from "@/types";
+
 export const MoonFilledIcon = ({
   size = 24,
   width,
@@ -29,10 +30,10 @@ export const SunFilledIcon = ({
   <svg
     aria-hidden="true"
     focusable="false"
-    height={size || height}
     role="presentation"
     viewBox="0 0 24 24"
     width={size || width}
+    height={size || height}
     {...props}
   >
     <g fill="currentColor">
@@ -41,4 +42,3 @@ export const SunFilledIcon = ({
     </g>
   </svg>
 )
-

@@ -53,7 +53,6 @@ export const subtitle = tv({
 });
 
 
-export const errorMessge = tv({
-  base: "w-full md:w-1/2 my-2 text-lg lg:text-xl text-default-600 block max-w-full",
-
-})
+// export const errorMessge = tv({
+//   base: "w-full md:w-1/2 my-2 text-lg lg:text-xl text-default-600 block max-w-full",
+// })

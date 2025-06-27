@@ -1,18 +1,15 @@
-import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react"
-import { BASE_URL } from "@/config/constants"
+import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
-     baseUrl: `${BASE_URL}`,
-     credentials: 'include'
-})
+  baseUrl: `${import.meta.env.VITE_API_URL}`,
+  credentials: "include",
+});
 
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 1 })
+const baseQueryWithRetry = retry(baseQuery, { maxRetries: 1 });
 
 export const api = createApi({
-     reducerPath: `splitApi`,
-     baseQuery: baseQueryWithRetry,
-     refetchOnMountOrArgChange: true,
-     endpoints: () => ({}),
-})
-
-// builder.mutation <** Response **, ** Arg **>
+  reducerPath: `splitApi`,
+  baseQuery: baseQueryWithRetry,
+  refetchOnMountOrArgChange: true,
+  endpoints: () => ({}),
+});

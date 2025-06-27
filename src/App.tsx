@@ -1,38 +1,17 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  useNavigate,
-  useHref,
-  Outlet,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import IndexPage from "@/pages/index";
 import DocsPage from "@/pages/docs";
 import PricingPage from "@/pages/pricing";
 import BlogPage from "@/pages/blog";
 import AboutPage from "@/pages/about";
-import Layout from "@/components/layouts/layout";
-import { HeroUIProvider } from "@heroui/system";
 import Auth from "@/pages/auth";
 import { AuthGuard } from "./components/auth-guard";
-
-
-const WithUiProvider = () => {
-  const navigate = useNavigate();
-  const href = useHref;
-
-  return (
-    <HeroUIProvider navigate={navigate} useHref={href} >
-      <AuthGuard>
-        <Outlet />
-      </AuthGuard>
-    </HeroUIProvider>
-  );
-}
+import { useTheme } from "./context/theme-context";
 
 const router = createBrowserRouter([
   {
-    element: <WithUiProvider />,
+    element: <AuthGuard />,
     children: [
       {
         path: "auth",
@@ -40,7 +19,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/",
-        element: <Layout />,
+        element: <IndexPage />,
         children: [
           { index: true, element: <IndexPage /> },
           { path: "docs", element: <DocsPage /> },
@@ -54,5 +33,11 @@ const router = createBrowserRouter([
 ]);
 
 export const App = () => {
-  return <RouterProvider router={router} />;
-}
+  const { theme } = useTheme();
+
+  return (
+    <div className={`${theme} text-foreground bg-background`}>
+      <RouterProvider router={router} />;
+    </div>
+  );
+};

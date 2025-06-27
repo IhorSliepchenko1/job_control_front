@@ -1,34 +1,45 @@
+import { AuthFooter } from "@/components/auth-footer";
+import { GoogleAuth } from "@/components/google-auth";
 import { LoginForm } from "@/components/login-form";
 import { RegisterForm } from "@/components/register-form";
-import { Tabs, Tab, Card, CardBody } from "@heroui/react";
+import { Tabs, Tab, Card, CardBody, CardFooter } from "@heroui/react";
 import { useState } from "react";
 
 export default function Auth() {
-     const [selected, setSelected] = useState<'login' | 'sign-up'>("login");
-     const selectionChange = () => setSelected(prev => prev === 'login' ? 'sign-up' : 'login')
+  const [selected, setSelected] = useState<"login" | "sign-up">("login");
+  const selectionChange = () =>
+    setSelected((prev) => (prev === "login" ? "sign-up" : "login"));
 
-     return (
-          <div className="h-[100vh] flex justify-center items-center">
-               <div>
-                    <Card className="max-w-full w-[70vw]">
-                         <CardBody className="overflow-hidden">
-                              <Tabs
-                                   fullWidth
-                                   aria-label="Tabs form"
-                                   selectedKey={selected}
-                                   size="md"
-                                   onSelectionChange={() => selectionChange()}
-                              >
-                                   <Tab key="login" title="Вход">
-                                        <LoginForm />
-                                   </Tab>
-                                   <Tab key="sign-up" title="Регистрация">
-                                        <RegisterForm />
-                                   </Tab>
-                              </Tabs>
-                         </CardBody>
-                    </Card>
-               </div>
-          </div>
-     )
+  return (
+    <div className="flex justify-center items-center">
+      <div>
+        <h2 className="text-xl font-semibold text-center mb-2">
+          {selected === "login" ? "Вход в аккаунт" : "Регистрация"}
+        </h2>
+        <Card className="max-w-full min-w-[340px] min-h-[400px]">
+          <CardBody className="overflow-hidden">
+            <Tabs
+              fullWidth
+              selectedKey={selected}
+              size="md"
+              onSelectionChange={selectionChange}
+            >
+              <Tab key="login" title="Вход">
+                <LoginForm />
+              </Tab>
+              <Tab key="sign-up" title="Регистрация">
+                <RegisterForm />
+              </Tab>
+            </Tabs>
+
+            <GoogleAuth />
+          </CardBody>
+
+          <CardFooter className="flex justify-center ">
+            <AuthFooter selected={selected} setSelected={setSelected} />
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
+  );
 }

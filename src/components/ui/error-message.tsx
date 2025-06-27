@@ -6,7 +6,7 @@ type Props = {
 
 export const ErrorMessage: React.FC<Props> = ({ errorMessage }) => {
      return (Boolean(errorMessage) &&
-          <div className="w-full flex items-center my-3">
+          <div className="text-center text-sm mt-2">
                <Alert color='danger' title={errorMessage} />
           </div>)
 }
