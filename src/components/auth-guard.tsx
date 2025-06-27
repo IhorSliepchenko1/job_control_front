@@ -1,12 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { Loader } from "./ui/loader";
+import { Layout } from "./layouts/layout";
+
 import {
   useUpdateRefreshTokenMutation,
   useValidateAccessTokenQuery,
   useValidateRefreshTokenQuery,
 } from "@/app/services/auth/authApi";
-import { useEffect, useState } from "react";
-import { Loader } from "./ui/loader";
-import { Layout } from "./layouts/layout";
 import { useAuth } from "@/context/auth-context";
 
 export const AuthGuard = () => {
@@ -19,15 +20,15 @@ export const AuthGuard = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const { setAuthenticated } = useAuth();
+  const { setAuthenticated, isAuthenticated } = useAuth();
 
-  const redirectAuth = () => {
+  const redirectAuth = useCallback(() => {
     navigate(`/auth`);
-  };
-  const updateToken = async () => {
+  }, [navigate]);
+
+  const updateToken = useCallback(async () => {
     await updateTokens();
-    navigate(`/`);
-  };
+  }, [updateTokens]);
 
   useEffect(() => {
     if (isAccessLoading || isRefreshLoading) return;
@@ -43,8 +44,8 @@ export const AuthGuard = () => {
         } else {
           await updateToken();
         }
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.error(error);
         redirectAuth();
       } finally {
         setLoading(false);
@@ -53,7 +54,24 @@ export const AuthGuard = () => {
 
     check();
     setAuthenticated(accessData?.success || false);
-  }, [accessData, refreshData, isAccessLoading, isRefreshLoading]);
+  }, [
+    accessData,
+    refreshData,
+    isAccessLoading,
+    isRefreshLoading,
+    redirectAuth,
+    setAuthenticated,
+    updateToken,
+  ]);
+
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (isAuthenticated && pathname === "/auth") {
+      navigate("/");
+      console.error(`Попытка перейти на закрытый роут!!!`);
+    }
+  }, [isAuthenticated, pathname, redirectAuth, navigate]);
 
   return loading ? <Loader /> : <Layout />;
 };

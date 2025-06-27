@@ -5,5 +5,5 @@ export const Loader = () => {
     <div className="h-[100vh] w-[100wv] flex justify-center items-center">
       <Spinner classNames={{ label: "text-foreground mt-4" }} variant="wave" />
     </div>
-  )
-}
+  );
+};

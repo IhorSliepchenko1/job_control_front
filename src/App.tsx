@@ -1,13 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { AuthGuard } from "./components/auth-guard";
+import { useTheme } from "./context/theme-context";
+
 import IndexPage from "@/pages/index";
 import DocsPage from "@/pages/docs";
 import PricingPage from "@/pages/pricing";
 import BlogPage from "@/pages/blog";
 import AboutPage from "@/pages/about";
 import Auth from "@/pages/auth";
-import { AuthGuard } from "./components/auth-guard";
-import { useTheme } from "./context/theme-context";
 
 const router = createBrowserRouter([
   {
@@ -22,10 +23,10 @@ const router = createBrowserRouter([
         element: <IndexPage />,
         children: [
           { index: true, element: <IndexPage /> },
-          { path: "docs", element: <DocsPage /> },
-          { path: "pricing", element: <PricingPage /> },
-          { path: "blog", element: <BlogPage /> },
-          { path: "about", element: <AboutPage /> },
+          { path: "/docs", element: <DocsPage /> },
+          { path: "/pricing", element: <PricingPage /> },
+          { path: "/blog", element: <BlogPage /> },
+          { path: "/about", element: <AboutPage /> },
         ],
       },
     ],

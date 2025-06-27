@@ -1,12 +1,16 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "./input";
-import { useLoginMutation } from "@/app/services/auth/authApi";
-import { isErrorMessage } from "@/utils/is-error-message";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import Input from "./input";
 import { AuthFormWrapper } from "./ui/auth-form-wrapper";
+
+import { useLoginMutation } from "@/app/services/auth/authApi";
+import { isErrorMessage } from "@/utils/is-error-message";
+import { useValidateTokens } from "@/hooks/useValidateTokens";
+import { useAuth } from "@/context/auth-context";
 
 const loginSchema = z.object({
   email: z
@@ -35,10 +39,15 @@ export const LoginForm = () => {
   const [login, { isLoading }] = useLoginMutation();
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const { triggerValidateTokens } = useValidateTokens();
+  const { setAuthenticated } = useAuth();
 
   const onSubmit = async (body: LoginFormData) => {
     try {
       await login(body).unwrap();
+      const isAuthenticated = await triggerValidateTokens();
+
+      setAuthenticated(isAuthenticated);
       navigate(`/`);
       reset();
     } catch (error) {
@@ -48,28 +57,28 @@ export const LoginForm = () => {
 
   return (
     <AuthFormWrapper
-      onSubmit={handleSubmit(onSubmit)}
+      btnTitle={"Войти"}
       errorMessage={errorMessage}
       isLoading={isLoading}
-      btnTitle={"Войти"}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <Input<LoginFormData>
-        label="Email"
-        type="email"
-        isRequired={true}
-        name="email"
-        register={register}
         errors={errors}
+        isRequired={true}
+        label="Email"
+        name="email"
         placeholder="Введите ваш email"
+        register={register}
+        type="email"
       />
       <Input<LoginFormData>
-        label="Пароль"
-        type="password"
-        isRequired={true}
-        name="password"
-        register={register}
         errors={errors}
+        isRequired={true}
+        label="Пароль"
+        name="password"
         placeholder="Введите ваш пароль"
+        register={register}
+        type="password"
       />
     </AuthFormWrapper>
   );

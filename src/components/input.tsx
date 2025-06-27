@@ -1,6 +1,7 @@
 import { Input as InputUi } from "@heroui/input";
 import { useState } from "react";
 import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
+
 import { EndContentPasswordInput } from "./ui/end-content-password-input";
 
 type Props<T extends Record<string, any>> = {
@@ -25,16 +26,13 @@ export default function Input<T extends Record<string, any>>({
   placeholder,
 }: Props<T>) {
   const [isVisible, setIsVisible] = useState(false);
+
   return (
     <InputUi
       label={label}
       type={type === "password" ? (isVisible ? "text" : "password") : type}
       variant={variant}
       {...register(name)}
-      isRequired={isRequired}
-      errorMessage={errors[name]?.message?.toString()}
-      placeholder={placeholder}
-      isInvalid={Boolean(errors[name])}
       endContent={
         type === "password" && (
           <EndContentPasswordInput
@@ -43,6 +41,10 @@ export default function Input<T extends Record<string, any>>({
           />
         )
       }
+      errorMessage={errors[name]?.message?.toString()}
+      isInvalid={Boolean(errors[name])}
+      isRequired={isRequired}
+      placeholder={placeholder}
     />
   );
 }

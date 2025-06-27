@@ -7,26 +7,17 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@heroui/navbar";
-import { siteConfig } from "@/config/site";
-import { useLogoutMutation } from "@/app/services/auth/authApi";
 import { useNavigate } from "react-router-dom";
-import { ThemeSwitch } from "./ui/theme-switch";
+
+import { ThemeSwitch } from "../ui/theme-switch";
+
+import { siteConfig } from "@/config/site";
 import { useAuth } from "@/context/auth-context";
 
 export const Navbar = () => {
-  const [logout] = useLogoutMutation();
+  const { isAuthenticated, logoutSession } = useAuth();
   const navigate = useNavigate();
-  const { isAuthenticated, setAuthenticated } = useAuth();
-
-  const logoutSession = async () => {
-    try {
-      await logout().unwrap();
-      setAuthenticated(false);
-      navigate(`/auth`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const logout = () => logoutSession(navigate);
 
   return (
     <HeroUINavbar maxWidth="full" position="sticky">
@@ -39,12 +30,12 @@ export const Navbar = () => {
                 className="flex items-center"
               >
                 {item.label === "Logout" ? (
-                  <p
+                  <button
                     className="text-red-600 cursor-pointer"
-                    onClick={logoutSession}
+                    onClick={logout}
                   >
                     {item.label}
-                  </p>
+                  </button>
                 ) : (
                   <Link color={"foreground"} href={item.href}>
                     {item.label}
@@ -67,12 +58,12 @@ export const Navbar = () => {
             {siteConfig.navMobile.map((item, index) => (
               <NavbarMenuItem key={`${item}-${index}`}>
                 {item.label === "Logout" ? (
-                  <p
+                  <button
                     className="text-red-600 cursor-pointer"
-                    onClick={logoutSession}
+                    onClick={logout}
                   >
                     {item.label}
-                  </p>
+                  </button>
                 ) : (
                   <Link color={"foreground"} href={item.href}>
                     {item.label}

@@ -6,15 +6,15 @@ export const GoogleAuth = () => {
   };
 
   return (
-    <button className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2">
       <span className="text-sm text-gray-500">или</span>
-      <p
-        onClick={handleGoogleAuth}
+      <button
         className="flex justify-center items-center cursor-pointer text-center text-small hover:shadow-xl hover:scale-105 transition duration-100"
+        onClick={handleGoogleAuth}
       >
         <FcGoogle size={18} />
         <span>oogle</span>
-      </p>{" "}
-    </button>
+      </button>{" "}
+    </div>
   );
 };

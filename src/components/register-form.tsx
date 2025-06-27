@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "./input";
-import {
-  useLazyValidateAccessTokenQuery,
-  useLazyValidateRefreshTokenQuery,
-  useRegisterUserMutation,
-} from "@/app/services/auth/authApi";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { isErrorMessage } from "@/utils/is-error-message";
+
+import Input from "./input";
 import { AuthFormWrapper } from "./ui/auth-form-wrapper";
+
+import { useRegisterUserMutation } from "@/app/services/auth/authApi";
+import { isErrorMessage } from "@/utils/is-error-message";
+import { useValidateTokens } from "@/hooks/useValidateTokens";
+import { useAuth } from "@/context/auth-context";
 
 const registerSchema = z.object({
   email: z
@@ -42,18 +42,17 @@ export const RegisterForm = () => {
     mode: "all",
   });
   const [registration, { isLoading }] = useRegisterUserMutation();
-  const [triggerAccess] = useLazyValidateAccessTokenQuery();
-  const [triggerRefresh] = useLazyValidateRefreshTokenQuery();
-
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const { triggerValidateTokens } = useValidateTokens();
+  const { setAuthenticated } = useAuth();
 
   const onSubmit = async (body: RegisterFormData) => {
     try {
       await registration(body).unwrap();
-      await triggerAccess().unwrap();
-      await triggerRefresh().unwrap();
-      
+      const isAuthenticated = await triggerValidateTokens();
+
+      setAuthenticated(isAuthenticated);
       navigate(`/`);
       reset();
     } catch (error) {
@@ -63,37 +62,37 @@ export const RegisterForm = () => {
 
   return (
     <AuthFormWrapper
-      onSubmit={handleSubmit(onSubmit)}
+      btnTitle={"Зарегистироваться"}
       errorMessage={errorMessage}
       isLoading={isLoading}
-      btnTitle={"Зарегистироваться"}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <Input<RegisterFormData>
+        errors={errors}
+        isRequired={true}
         label="Email"
-        type="email"
-        isRequired={true}
         name="email"
-        register={register}
-        errors={errors}
         placeholder="Введите email"
+        register={register}
+        type="email"
       />
       <Input<RegisterFormData>
+        errors={errors}
+        isRequired={true}
         label="Имя"
-        type="text"
-        isRequired={true}
-        placeholder="Введите ваше имя"
         name="name"
+        placeholder="Введите ваше имя"
         register={register}
-        errors={errors}
+        type="text"
       />
       <Input<RegisterFormData>
-        label="Пароль"
-        type="password"
-        isRequired={true}
-        placeholder="Придумайте пароль"
-        name="password"
-        register={register}
         errors={errors}
+        isRequired={true}
+        label="Пароль"
+        name="password"
+        placeholder="Придумайте пароль"
+        register={register}
+        type="password"
       />
     </AuthFormWrapper>
   );

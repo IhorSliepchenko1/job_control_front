@@ -1,9 +1,10 @@
+import { Tabs, Tab, Card, CardBody, CardFooter } from "@heroui/react";
+import { useState } from "react";
+
 import { AuthFooter } from "@/components/auth-footer";
 import { GoogleAuth } from "@/components/google-auth";
 import { LoginForm } from "@/components/login-form";
 import { RegisterForm } from "@/components/register-form";
-import { Tabs, Tab, Card, CardBody, CardFooter } from "@heroui/react";
-import { useState } from "react";
 
 export default function Auth() {
   const [selected, setSelected] = useState<"login" | "sign-up">("login");

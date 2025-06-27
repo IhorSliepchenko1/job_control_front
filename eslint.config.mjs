@@ -51,8 +51,8 @@ export default defineConfig([
         "plugin:react/recommended",
         "plugin:prettier/recommended",
         "plugin:react-hooks/recommended",
-        "plugin:jsx-a11y/recommended",
-      ),
+        "plugin:jsx-a11y/recommended"
+      )
     ),
 
     plugins: {
@@ -67,7 +67,7 @@ export default defineConfig([
     languageOptions: {
       globals: {
         ...Object.fromEntries(
-          Object.entries(globals.browser).map(([key]) => [key, "off"]),
+          Object.entries(globals.browser).map(([key]) => [key, "off"])
         ),
         ...globals.node,
       },
@@ -89,15 +89,14 @@ export default defineConfig([
       },
     },
 
-
     files: ["**/*.ts", "**/*.tsx"],
 
     rules: {
-      "no-console": "warn",
+      "no-console": "off",
       "react/prop-types": "off",
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",
-      "react-hooks/exhaustive-deps": "off",
+      "react-hooks/exhaustive-deps": "warn",
       "jsx-a11y/click-events-have-key-events": "warn",
       "jsx-a11y/interactive-supports-focus": "warn",
       "prettier/prettier": "warn",

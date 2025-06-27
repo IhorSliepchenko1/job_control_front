@@ -5,7 +5,7 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 };
 
 export type ApiResponse<T = undefined> = {
-  success: boolean
-  message: string
-  data?: T
-}
+  success: boolean;
+  message: string;
+  data?: T;
+};

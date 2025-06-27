@@ -1,6 +1,8 @@
-import { METHODS } from "@/utils/methods";
 import { api } from "../api";
+
 import { Login, RegisterEmployee, RegisterUser } from "./authTypes";
+
+import { METHODS } from "@/utils/methods";
 import { ApiResponse } from "@/types";
 
 export const authApi = api.injectEndpoints({
