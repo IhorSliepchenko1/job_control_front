@@ -14,7 +14,7 @@ export default function Auth() {
   return (
     <div className="flex justify-center items-center">
       <div>
-        <h2 className="text-xl font-semibold text-center mb-2">
+        <h2 className="text-2xl font-semibold text-start mb-4">
           {selected === "login" ? "Вход в аккаунт" : "Регистрация"}
         </h2>
         <Card className="max-w-full min-w-[340px] min-h-[400px]">

@@ -27,7 +27,16 @@ export const AuthGuard = () => {
   }, [navigate]);
 
   const updateToken = useCallback(async () => {
-    await updateTokens();
+    const { success } = await updateTokens().unwrap();
+    try {
+      if (success) {
+        setAuthenticated(success);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setAuthenticated(success ?? false);
+    }
   }, [updateTokens]);
 
   useEffect(() => {
@@ -36,13 +45,11 @@ export const AuthGuard = () => {
     const check = async () => {
       try {
         if (!accessData?.success) {
-          if (!refreshData?.success) {
-            redirectAuth();
-          } else {
+          if (!refreshData?.success && refreshData) {
             await updateToken();
+          } else {
+            redirectAuth();
           }
-        } else {
-          await updateToken();
         }
       } catch (error) {
         console.error(error);

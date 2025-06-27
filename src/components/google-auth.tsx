@@ -14,7 +14,7 @@ export const GoogleAuth = () => {
       >
         <FcGoogle size={18} />
         <span>oogle</span>
-      </button>{" "}
+      </button>
     </div>
   );
 };

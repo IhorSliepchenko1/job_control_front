@@ -38,7 +38,7 @@ export const App = () => {
 
   return (
     <div className={`${theme} text-foreground bg-background`}>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </div>
   );
 };
