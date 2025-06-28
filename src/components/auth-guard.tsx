@@ -36,6 +36,7 @@ export const AuthGuard = () => {
       console.error(error);
     } finally {
       setAuthenticated(success ?? false);
+      return success ?? false;
     }
   }, [updateTokens]);
 
@@ -45,10 +46,14 @@ export const AuthGuard = () => {
     const check = async () => {
       try {
         if (!accessData?.success) {
-          if (!refreshData?.success && refreshData) {
-            await updateToken();
-          } else {
-            redirectAuth();
+          if (refreshData?.success) {
+            const isUpdate = await updateToken();
+
+            if (!isUpdate) {
+              redirectAuth();
+            }
+          } else{
+            redirectAuth()
           }
         }
       } catch (error) {
